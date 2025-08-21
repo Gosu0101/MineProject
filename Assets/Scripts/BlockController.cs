@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class BlockController : MonoBehaviour
 {
-    private int whatIsThisBlocK;
+    
     public BlockData bd;
+    public GameObject resourcePrefab;
 
     int blockID;
     string blockName;
     int hardness; // 블록의 경도 (요구 곡괭이 파워)
-    int hp;       // 블록의 내구도
+    public int hp;       // 블록의 내구도
     int value;    // 판매 시 가치
 
 
@@ -39,11 +40,20 @@ public class BlockController : MonoBehaviour
 
     void Start()
     {
-        blockID = bd.blockID;
-        blockName = bd.blockName;
-        hardness = bd.hardness;
-        hp = bd.hp;
-        value = bd.value;
+        if(bd != null)
+        {
+            blockID = bd.blockID;
+            blockName = bd.blockName;
+            hardness = bd.hardness;
+            hp = bd.hp;
+            value = bd.value;
+        }
+        else
+        {
+            Debug.Log("블럭 데이터 스크립트 손실");//블럭데이터 없을 경우 발생
+            this.gameObject.SetActive(false);//디버그 로그 띄우고 비활성화
+        }
+        
         
     }
 
@@ -52,29 +62,29 @@ public class BlockController : MonoBehaviour
         if(hit.collider.gameObject == this.gameObject)//Ray에 맞은게 자기 자신인지 확인
         {
             if (damage > hardness)//데미지가 경도보다 클 경우(회복방지)
-                hp = damage - hardness;//후에 Set으로 교체 추천
+                hp = damage - hardness;
             
         }
     }
 
+    //후에 폭탄이 추가 되면 ray로 해결 안되거나 트리거로 처리하는게 편할 수 있음
+
     private void Update()
     {
-        if (bd != null)//블럭데이터 없을 경우 발생(주의:작동안함)
-        {
-            Debug.Log("블럭 데이터 스크립트 손실");
-            this.gameObject.SetActive(false);//디버그 로그 띄우고 비활성화
-        }
-
-        if(bd.hp <= 0)//체력이 0이하일경우
+       
+        
+        if(hp <= 0)//체력이 0이하일경우
         {
             resourceDrop();//자원 드랍
             gameObject.SetActive(false);//비활성화(후에 파괴로 변경가능)
+            //GameObject.Destroy(gameObject);
         }
     }
 
     void resourceDrop()//자원 드랍
     {
         Debug.Log("자원 드랍");
+        Instantiate(resourcePrefab);
     }
 
     public int GetBlockID()
