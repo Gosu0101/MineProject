@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe4d9f8cfe4baa4a95df8e410143523, type: 3}
   m_Name: 2Stone
   m_EditorClassIdentifier: 
-  blockID: 0
-  blockName: 
-  hardness: 0
-  hp: 0
-  value: 0
+  blockID: 2
+  blockName: Stone
+  hardness: 5
+  hp: 5
+  value: 3
