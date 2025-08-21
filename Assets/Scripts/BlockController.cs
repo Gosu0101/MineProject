@@ -51,7 +51,9 @@ public class BlockController : MonoBehaviour
     {
         if(hit.collider.gameObject == this.gameObject)//Ray에 맞은게 자기 자신인지 확인
         {
-            hp = damage - hardness;//후에 Set으로 교체 추천
+            if (damage > hardness)//데미지가 경도보다 클 경우(회복방지)
+                hp = damage - hardness;//후에 Set으로 교체 추천
+            
         }
     }
 
