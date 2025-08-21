@@ -6255,7 +6255,7 @@ MonoBehaviour:
   speed: 10
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   groundCheckDistance: 1
   jumpForce: 5
 --- !u!1001 &914714163
