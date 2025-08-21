@@ -2073,32 +2073,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2105330722}
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
---- !u!1 &134826050 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7325203099191009329, guid: 6695e725d4643a643a58b7b00ac71077, type: 3}
-  m_PrefabInstance: {fileID: 218505434599367128}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &137931914
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134826050}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.0000019073486, z: 0}
 --- !u!1 &147523481
 GameObject:
   m_ObjectHideFlags: 0
@@ -8936,32 +8910,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1279437348525638701, guid: e2e682b966e3f644392ffbfab511e0e2, type: 3}
   m_PrefabInstance: {fileID: 1068010497}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1098176959 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7307501949519165858, guid: 2ffa77e4a08cb0a419df3a3856b4b719, type: 3}
-  m_PrefabInstance: {fileID: 8064262945695018418}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1098176961
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098176959}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1101803693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15761,17 +15709,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone_Prefab
       objectReference: {fileID: 0}
-    - target: {fileID: 7325203099191009329, guid: 6695e725d4643a643a58b7b00ac71077, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7325203099191009329, guid: 6695e725d4643a643a58b7b00ac71077, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 137931914}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6695e725d4643a643a58b7b00ac71077, type: 3}
 --- !u!1001 &2864091736970310616
 PrefabInstance:
@@ -15917,17 +15858,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dirt_Prefab
       objectReference: {fileID: 0}
-    - target: {fileID: 7307501949519165858, guid: 2ffa77e4a08cb0a419df3a3856b4b719, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7307501949519165858, guid: 2ffa77e4a08cb0a419df3a3856b4b719, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1098176961}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ffa77e4a08cb0a419df3a3856b4b719, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
