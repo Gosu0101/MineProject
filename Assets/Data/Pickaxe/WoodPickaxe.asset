@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35541d3a984b87e4a84d9375456ee86c, type: 3}
   m_Name: WoodPickaxe
   m_EditorClassIdentifier: 
-  pickaxeID: 0
-  pickaxeName: 
-  power: 0
+  pickaxeID: 101
+  pickaxeName: Wood Pickaxe
+  power: 5
   cost: 0
