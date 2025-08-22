@@ -15,79 +15,40 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        // Inventory ON / OFF
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E)) UISetActive(0); // E키 누를 시, Inventory 활성화 or 비활성화
+        if (Input.GetKeyDown(KeyCode.Q)) UISetActive(1); // Q키 누를 시, Quest 활성화 or 비활성화
+        if (Input.GetKeyDown(KeyCode.R)) UISetActive(2); // R키 누를 시, Item 활성화 or 비활성화
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SelectTools(0); // 상단 1번 키 누를 시, 1번 도구 선택
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectTools(1); // 상단 2번 키 누를 시, 2번 도구 선택
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectTools(2); // 상단 3번 키 누를 시, 3번 도구 선택
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectTools(3); // 상단 4번 키 누를 시, 4번 도구 선택
+    }
+
+    // List<GameObject>내 uiGameObject에 저장된 UI를 활성화 or 비활성화
+    void UISetActive(int index)
+    {
+        if (uiGameObject[index].activeInHierarchy)
         {
-            if (uiGameObject[0].activeInHierarchy)
-            {
-                uiGameObject[0].SetActive(false);
+            uiGameObject[index].SetActive(false);
 
-                uiText[0].text = "OFF";
-                uiText[0].color = Color.red;
-            }
-            else
-            {
-                uiGameObject[0].SetActive(true);
-
-                uiText[0].text = "ON";
-                uiText[0].color = Color.green;
-            }
+            uiText[index].text = "OFF";
+            uiText[index].color = Color.red;
         }
-
-        // Quest ON / OFF
-        if (Input.GetKeyDown(KeyCode.Q))
+        else
         {
-            if (uiGameObject[1].activeInHierarchy)
-            {
-                uiGameObject[1].SetActive(false);
+            uiGameObject[index].SetActive(true);
 
-                uiText[1].text = "OFF";
-                uiText[1].color = Color.red;
-            }
-            else
-            {
-                uiGameObject[1].SetActive(true);
+            uiText[index].text = "ON";
+            uiText[index].color = Color.green;
+        }
+    }
 
-                uiText[1].text = "ON";
-                uiText[1].color = Color.green;
-            }
-        }
-        
-        // Item ON / OFF
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (uiGameObject[2].activeInHierarchy)
-            {
-                uiGameObject[2].SetActive(false);
+    // List<GameObject>내 selectTools에 저장된 위치로 Select 오브젝트가 이동
+    void SelectTools(int index)
+    {
+        uiGameObject[3].transform.position = selectTools[index].transform.position;
 
-                uiText[2].text = "OFF";
-                uiText[2].color = Color.red;
-            }
-            else
-            {
-                uiGameObject[2].SetActive(true);
-
-                uiText[2].text = "ON";
-                uiText[2].color = Color.green;
-            }
-        }
-
-        // Select Tools
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            uiGameObject[3].transform.position = selectTools[0].transform.position;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            uiGameObject[3].transform.position = selectTools[1].transform.position;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            uiGameObject[3].transform.position = selectTools[2].transform.position;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            uiGameObject[3].transform.position = selectTools[3].transform.position;
-        }
+        // 선택한 도구에 따라 작용하는 상호작용 소스코드 필요
     }
 }
