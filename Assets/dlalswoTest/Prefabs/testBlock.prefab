@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9101236643543261761}
   - component: {fileID: 2426985617633870131}
   - component: {fileID: 8140373346653206041}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: testBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,3 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bd: {fileID: 11400000, guid: 3cc8c216746d2ac4a9fd226b111ae91c, type: 2}
   resourcePrefab: {fileID: 0}
+  hp: 0

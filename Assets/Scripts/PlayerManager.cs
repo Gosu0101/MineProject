@@ -49,6 +49,10 @@ public class PlayerManager : MonoBehaviour
         CheckGrounded();   // 지면 체크
         HandleJump();      // 점프 처리
         HandleMining();    // 채굴 처리
+
+        //ForTesting
+        
+        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward, Color.red);
     }
 
     private void FixedUpdate()
@@ -125,6 +129,23 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Mining");
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            RaycastHit hit;
+
+            // Ray가 적 레이어에 닿았는지 확인
+            if (Physics.Raycast(ray, out hit, 2.0f, blockLayer))
+            {
+                
+                BlockController block = hit.collider.GetComponent<BlockController>();
+
+                
+                if (block != null)
+                {
+                    block.takeDamage(2,hit);
+                }
+            }
+
+
         }
     }
 

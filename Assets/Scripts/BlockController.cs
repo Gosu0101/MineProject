@@ -18,25 +18,7 @@ public class BlockController : MonoBehaviour
 
 
 
-    ////이 함수는 Spawner에서 블럭 Id와 함께 불러와져야 합니다.
-    ////사용법:case에 블럭 아이디를 넣고 bd에 id와 연결하고 싶은 블럭 데이터를 
-    //public void SetThisBlock(int thisBlocIs)
-    //{
-    //    switch(whatIsThisBlocK)
-    //    {
-    //        case 0:
-    //            bd = Resources.Load<BlockData>("Data/Block/Grain");
-    //            break;
-
-    //        case 1:
-    //            bd = Resources.Load<BlockData>("Data/Block/Grain");
-    //            break;
-    //        default:
-    //            Debug.Log("BC.SetThisBlock.default 발생");
-    //            break;
-
-    //    }
-    //}
+    
 
     void Start()
     {
@@ -57,12 +39,14 @@ public class BlockController : MonoBehaviour
         
     }
 
-    public void OnHitByRay(int damage, RaycastHit hit)//플레이어 레이케스트에 맞았는지 확인하는 함수
+    public void takeDamage(int damage, RaycastHit hit)//플레이어 레이케스트에 맞았는지 확인하는 함수
     {
-        if(hit.collider.gameObject == this.gameObject)//Ray에 맞은게 자기 자신인지 확인
+        Debug.Log("takeDamageStart");
+        if (hit.collider.gameObject == this.gameObject)//Ray에 맞은게 자기 자신인지 확인
         {
             if (damage > hardness)//데미지가 경도보다 클 경우(회복방지)
-                hp = damage - hardness;
+                hp -= damage - hardness;
+            Debug.Log("takeDamage :" + hp);
             
         }
     }
@@ -83,8 +67,12 @@ public class BlockController : MonoBehaviour
 
     void resourceDrop()//자원 드랍
     {
-        Debug.Log("자원 드랍");
-        Instantiate(resourcePrefab);
+        if (resourcePrefab != null)
+        {
+            Debug.Log("자원 드랍");
+            Instantiate(resourcePrefab);
+        }
+        
     }
 
     public int GetBlockID()
