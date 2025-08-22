@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35541d3a984b87e4a84d9375456ee86c, type: 3}
   m_Name: StonePickaxe
   m_EditorClassIdentifier: 
-  pickaxeID: 0
-  pickaxeName: 
-  power: 0
-  cost: 0
+  pickaxeID: 102
+  pickaxeName: Stone Pickaxe
+  power: 15
+  cost: 200
