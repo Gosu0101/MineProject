@@ -133,14 +133,14 @@ public class PlayerManager : MonoBehaviour
             Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);//카메라 위치로 이동
             RaycastHit hit;
 
-            // Ray가 적 레이어에 닿았는지 확인
+            // Ray가 블럭 레이어에 닿았는지 확인
             if (Physics.Raycast(ray, out hit, miningDistance, blockLayer))//3번째 매서드가 거리
             {
                 
-                BlockController block = hit.collider.GetComponent<BlockController>();
+                BlockController block = hit.collider.GetComponent<BlockController>();//레이에 닿은 블럭 컨트롤러 가져오기
 
                 
-                if (block != null)
+                if (block != null)//블럭에 블럭컨트로럴가 없지 않을 경우
                 {
                     block.takeDamage(currentPickaxe.power,hit);//첫번째 매서드가 데미지
                 }

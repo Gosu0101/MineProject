@@ -7,7 +7,7 @@ using UnityEngine;
 public class BlockController : MonoBehaviour
 {
     
-    public BlockData bd;
+    public BlockData blockData;
     public GameObject resourcePrefab;
 
     int blockID;
@@ -22,13 +22,13 @@ public class BlockController : MonoBehaviour
 
     void Start()
     {
-        if(bd != null)
+        if(blockData != null)//블럭 데이터가 존재할 경우(블럭데이터는 이때 초기값만 가져옵니다.)
         {
-            blockID = bd.blockID;
-            blockName = bd.blockName;
-            hardness = bd.hardness;
-            hp = bd.hp;
-            value = bd.value;
+            blockID = blockData.blockID;
+            blockName = blockData.blockName;
+            hardness = blockData.hardness;
+            hp = blockData.hp;
+            value = blockData.value;
         }
         else
         {
@@ -41,12 +41,12 @@ public class BlockController : MonoBehaviour
 
     public void takeDamage(int damage, RaycastHit hit)//플레이어 레이케스트에 맞았는지 확인하는 함수
     {
-        Debug.Log("takeDamageStart");
+        //Debug.Log("takeDamageStart");
         if (hit.collider.gameObject == this.gameObject)//Ray에 맞은게 자기 자신인지 확인
         {
             if (damage > hardness)//데미지가 경도보다 클 경우(회복방지)
                 hp -= damage - hardness;
-            Debug.Log("takeDamage :" + hp);
+            //Debug.Log("takeDamage :" + hp);
             
         }
     }
@@ -55,11 +55,9 @@ public class BlockController : MonoBehaviour
 
     private void Update()
     {
-       
-        
         if(hp <= 0)//체력이 0이하일경우
         {
-            Debug.Log("Break");
+            //Debug.Log("Break");
             resourceDrop();//자원 드랍
             gameObject.SetActive(false);//비활성화(후에 파괴로 변경가능)
             //GameObject.Destroy(gameObject);
@@ -75,7 +73,7 @@ public class BlockController : MonoBehaviour
         }
         
     }
-
+    //Get 함수들(아직 사용은 안됨)
     public int GetBlockID()
     {
         return blockID;
@@ -95,6 +93,6 @@ public class BlockController : MonoBehaviour
     }
     public int GetBlockMaxHp()
     {
-        return bd.hp;
+        return blockData.hp;
     }
 }
