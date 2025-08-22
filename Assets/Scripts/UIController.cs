@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    public List<GameObject> ui;
+    public List<GameObject> uiGameObject;
+    public List<Text> uiText;
+    public List<GameObject> selectTools;
 
     void Start()
     {
@@ -12,13 +15,60 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && ui[0].activeInHierarchy)
+        // Quest ON / OFF
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            ui[0].SetActive(false);
-        }
-        if (Input.GetKeyDown(KeyCode.Q) && !ui[0].activeInHierarchy)
-        {
+            if (uiGameObject[0].activeInHierarchy)
+            {
+                uiGameObject[0].SetActive(false);
 
+                uiText[1].text = "OFF";
+                uiText[1].color = Color.red;
+            }
+            else
+            {
+                uiGameObject[0].SetActive(true);
+
+                uiText[1].text = "ON";
+                uiText[1].color = Color.green;
+            }
+        }
+        
+        // Item ON / OFF
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (uiGameObject[1].activeInHierarchy)
+            {
+                uiGameObject[1].SetActive(false);
+
+                uiText[2].text = "OFF";
+                uiText[2].color = Color.red;
+            }
+            else
+            {
+                uiGameObject[1].SetActive(true);
+
+                uiText[2].text = "ON";
+                uiText[2].color = Color.green;
+            }
+        }
+
+        // Select Tools
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            uiGameObject[2].transform.position = selectTools[0].transform.position;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            uiGameObject[2].transform.position = selectTools[1].transform.position;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            uiGameObject[2].transform.position = selectTools[2].transform.position;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            uiGameObject[2].transform.position = selectTools[3].transform.position;
         }
     }
 }
