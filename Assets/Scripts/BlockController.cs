@@ -13,7 +13,7 @@ public class BlockController : MonoBehaviour
     int blockID;
     string blockName;
     int hardness; // 블록의 경도 (요구 곡괭이 파워)
-    public int hp;       // 블록의 내구도
+    int hp;       // 블록의 내구도
     int value;    // 판매 시 가치
 
 
@@ -59,6 +59,7 @@ public class BlockController : MonoBehaviour
         
         if(hp <= 0)//체력이 0이하일경우
         {
+            Debug.Log("Break");
             resourceDrop();//자원 드랍
             gameObject.SetActive(false);//비활성화(후에 파괴로 변경가능)
             //GameObject.Destroy(gameObject);

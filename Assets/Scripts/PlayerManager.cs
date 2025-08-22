@@ -30,6 +30,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float miningDistance = 3f;
     [SerializeField] private LayerMask blockLayer;
     public PickaxeData currentPickaxe;
+    
 
 
     void Start()
@@ -52,7 +53,7 @@ public class PlayerManager : MonoBehaviour
 
         //ForTesting
         
-        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward, Color.red);
+        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward*miningDistance, Color.red);
     }
 
     private void FixedUpdate()
@@ -129,11 +130,11 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Mining");
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);//카메라 위치로 이동
             RaycastHit hit;
 
             // Ray가 적 레이어에 닿았는지 확인
-            if (Physics.Raycast(ray, out hit, 2.0f, blockLayer))
+            if (Physics.Raycast(ray, out hit, miningDistance, blockLayer))//3번째 매서드가 거리
             {
                 
                 BlockController block = hit.collider.GetComponent<BlockController>();
@@ -141,7 +142,7 @@ public class PlayerManager : MonoBehaviour
                 
                 if (block != null)
                 {
-                    block.takeDamage(2,hit);
+                    block.takeDamage(currentPickaxe.power,hit);//첫번째 매서드가 데미지
                 }
             }
 
