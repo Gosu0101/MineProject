@@ -1,10 +1,25 @@
 using UnityEngine;
+using System.Collections.Generic; // [추가된 코드] Dictionary를 사용하기 위해 추가
 
 public class PlayerManager : MonoBehaviour
 {
+    // --- [추가된 코드] 싱글톤 설정 ---
+    // 다른 스크립트에서 PlayerManager.Instance 로 쉽게 접근할 수 있게 해줍니다.
+    public static PlayerManager Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+            Destroy(gameObject);
+        else
+            Instance = this;
+    }
+    // ---------------------------------
+
     // --- 변수 선언부 ---
     [Header("오브젝트 연결")]
     [SerializeField] private PickaxeController pickaxeController; // 곡괭이 컨트롤러 연결
+    [SerializeField] private InventoryUI inventoryUI; // [추가된 코드] 인벤토리 UI 컨트롤러 연결
 
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
@@ -30,7 +45,13 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float miningDistance = 3f;
     [SerializeField] private LayerMask blockLayer;
     public PickaxeData currentPickaxe;
-    
+
+    // --- [추가된 코드] 재화 및 인벤토리 데이터 ---
+    [Header("재화 및 인벤토리")]
+    public int currentGold = 0;
+    // 어떤 아이템(BlockData)을 몇 개(int) 가지고 있는지 저장합니다.
+    public Dictionary<BlockData, int> inventory = new Dictionary<BlockData, int>();
+    // -------------------------------------------
 
 
     void Start()
@@ -52,14 +73,36 @@ public class PlayerManager : MonoBehaviour
         HandleMining();    // 채굴 처리
 
         //ForTesting
-        
-        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward*miningDistance, Color.red);
+        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * miningDistance, Color.red);
     }
 
     private void FixedUpdate()
     {
         PlayerMove();
     }
+
+    // --- [추가된 코드] 아이템 획득 및 UI 갱신 함수 ---
+    public void AddItem(BlockData blockData, int amount)
+    {
+        // 인벤토리에 이미 해당 아이템이 있는지 확인
+        if (inventory.ContainsKey(blockData))
+        {
+            inventory[blockData] += amount; // 있으면 개수만 추가
+        }
+        else
+        {
+            inventory.Add(blockData, amount); // 없으면 새로 추가
+        }
+
+        Debug.Log(blockData.blockName + " " + amount + "개 획득! 현재: " + inventory[blockData] + "개");
+
+        // 인벤토리 UI가 연결되어 있다면 UI 갱신을 요청합니다.
+        if (inventoryUI != null)
+        {
+            inventoryUI.UpdateInventoryUI(inventory);
+        }
+    }
+    // ------------------------------------------------
 
     // --- 함수 구현부 ---
 
@@ -113,8 +156,6 @@ public class PlayerManager : MonoBehaviour
         animator.SetBool("isGrounded", isGrounded);
     }
 
-    
-
     private void HandleJump()
     {
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
@@ -138,18 +179,13 @@ public class PlayerManager : MonoBehaviour
             // Ray가 블럭 레이어에 닿았는지 확인
             if (Physics.Raycast(ray, out hit, miningDistance, blockLayer))//3번째 매서드가 거리
             {
-                
                 BlockController block = hit.collider.GetComponent<BlockController>();//레이에 닿은 블럭 컨트롤러 가져오기
 
-                
                 if (block != null)//블럭에 블럭컨트로럴가 없지 않을 경우
                 {
-                    block.takeDamage(currentPickaxe.power,hit);//첫번째 매서드가 데미지
+                    block.takeDamage(currentPickaxe.power, hit);//첫번째 매서드가 데미지
                 }
             }
-
-
         }
     }
-
 }
