@@ -30,6 +30,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float miningDistance = 3f;
     [SerializeField] private LayerMask blockLayer;
     public PickaxeData currentPickaxe;
+    
 
 
     void Start()
@@ -49,6 +50,10 @@ public class PlayerManager : MonoBehaviour
         CheckGrounded();   // 지면 체크
         HandleJump();      // 점프 처리
         HandleMining();    // 채굴 처리
+
+        //ForTesting
+        
+        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward*miningDistance, Color.red);
     }
 
     private void FixedUpdate()
@@ -102,11 +107,13 @@ public class PlayerManager : MonoBehaviour
         animator.SetFloat("DirectionZ", frontBack);
     }
 
-    private void CheckGrounded()
+    private void CheckGrounded()//블럭 위에 올라갔는지 체크하는것도 추가해주세요
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
         animator.SetBool("isGrounded", isGrounded);
     }
+
+    
 
     private void HandleJump()
     {
@@ -125,6 +132,23 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Mining");
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);//카메라 위치로 이동
+            RaycastHit hit;
+
+            // Ray가 블럭 레이어에 닿았는지 확인
+            if (Physics.Raycast(ray, out hit, miningDistance, blockLayer))//3번째 매서드가 거리
+            {
+                
+                BlockController block = hit.collider.GetComponent<BlockController>();//레이에 닿은 블럭 컨트롤러 가져오기
+
+                
+                if (block != null)//블럭에 블럭컨트로럴가 없지 않을 경우
+                {
+                    block.takeDamage(currentPickaxe.power,hit);//첫번째 매서드가 데미지
+                }
+            }
+
+
         }
     }
 
