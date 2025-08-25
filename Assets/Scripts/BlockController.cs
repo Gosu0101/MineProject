@@ -3,6 +3,7 @@
 //=====================================================================
 
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class BlockController : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class BlockController : MonoBehaviour
     public BlockData blockData;
     public GameObject resourcePrefab;
 
+    
     int blockID;
     string blockName;
     int hardness; // 블록의 경도 (요구 곡괭이 파워)
     int hp;       // 블록의 내구도
     int value;    // 판매 시 가치
+
+    float locate; //현재 위치(스포너가 현재 어디까지 캐졌는지 확인용)
 
 
 
@@ -59,6 +63,7 @@ public class BlockController : MonoBehaviour
         {
             //Debug.Log("Break");
             resourceDrop();//자원 드랍
+            SpawnerScript.Instance.refreshLayer(locate);
             gameObject.SetActive(false);//비활성화(후에 파괴로 변경가능)
             //GameObject.Destroy(gameObject);
         }
@@ -94,5 +99,12 @@ public class BlockController : MonoBehaviour
     public int GetBlockMaxHp()
     {
         return blockData.hp;
+    }
+
+    
+    public void setLocate(float n)//블럭의 현재 높이를 설정
+    {
+        locate = n;
+        return;
     }
 }

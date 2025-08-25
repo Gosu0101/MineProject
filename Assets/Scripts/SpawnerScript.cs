@@ -7,32 +7,66 @@ public class SpawnerScript : MonoBehaviour
 {
     public int xWidth;//x크기
     public int yWidth;//y크기
-    public float height;//높이
+    public float depth;//최대 깊이
     public List<GameObject> blockPrefabs;//블럭 프리팹
+    public List<float> layerChangingTimeing;
     
 
-    private float currentHeight = 0;//현재 높이
+    float currentDepth = 0;//현재 깊이
+
+    private GameObject allBlock;
 
     //TODO: 위쪽 블럭 파괴 확인하여 아래쪽 미리 생성하기
+    //위쪽 블럭 파괴 체크는 블럭 콜라이더를 가진 자식 오브젝트로 블럭 콜라이더에 드랍템이 충돌시 생성 되는걸로 하면 될듯
+    //그냥 블럭 파괴될때 함수 호출해서 위치확인하는걸로 변경함
+
+    public static SpawnerScript Instance { get; private set; }//싱클톤 사용
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+            Destroy(gameObject);
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+    }
+
 
     private void Start()
     {
         for (int i = 0; i < 10; i++)//시직시 10개의 층 생성
         {
-            generateBlockLayer(0);
+            generateBlockLayer(i);
         }
-        
+
+        allBlock = new GameObject("allBlock");
+        allBlock.transform.position = Vector3.zero;
+
     }
 
     //현재 단계에 맞는 레이어 생성
-    void generateBlockLayer(int levelOfBlock)//층별로 블럭생성
+    public void generateBlockLayer(int locate)//층별로 블럭생성
     {
-        
-        if(currentHeight >=  height)//현재 깊이가 초과하면 더이상 생성 안함
+        int levelOfBlock = 0;
+        if(currentDepth >=  depth)//현재 깊이가 초과하면 더이상 생성 안함
         {
             return;
         }
         //Debug.Log("generateLayer...:" + levelOfBlock);
+
+        for (int i = 0; i < layerChangingTimeing.Count - 1; i++)//현재 어느 레벨인지 확인하기
+        {
+            if (locate < layerChangingTimeing[i])
+            {
+                levelOfBlock = i; 
+                break;
+            }
+        }
+
+
         for (int i = 0; i < xWidth; i++)//x크기 만큼 반복
         {
             for (int j = 0; j < yWidth; j++)//y크기 만큼 반복
@@ -44,15 +78,21 @@ public class SpawnerScript : MonoBehaviour
                 }
                 else
                 {
+                    
+                    GameObject newBlock = 
                     Instantiate(blockPrefabs[levelOfBlock + ran],//랜덤으로 더 좋은 광물 생성
-                        (gameObject.transform.position + new Vector3(i, 0 - currentHeight, j)),//위치 조정(스포너 기준으로 생성)
-                        Quaternion.identity);//회전(아마도 없어도 됨)
+                        (gameObject.transform.position + new Vector3(i, 0 - currentDepth, j)),//위치 조정(스포너 기준으로 생성)
+                        Quaternion.identity //회전(아마도 없어도 됨)
+                        /*, allBlock.transform*/);
+
+                    BlockController newBlockController = newBlock.GetComponent<BlockController>();
+                    newBlockController.setLocate(currentDepth);//위치를 현재 깊이로 설정
                 }
                 
                     
             }
         }
-        currentHeight += 1f;//깊이 추가
+        currentDepth += 1f;//깊이 추가
     }
 
     int generateRandomBlock()
@@ -70,5 +110,17 @@ public class SpawnerScript : MonoBehaviour
 
         Debug.Log("Error: generateRandomBlock");//어째선진 몰라도 다 위에 if에 안들어갔을 경우
         return 0;
+    }
+
+    public void refreshLayer(float locate)//현재 위치를 받아오기
+    {
+        if (locate < currentDepth)
+        {
+           
+            generateBlockLayer((int)currentDepth);//싱글톤 사용
+            Debug.Log("refreshLayer :" + locate);
+            
+
+        }
     }
 }
