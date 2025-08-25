@@ -57,11 +57,11 @@ public class SpawnerScript : MonoBehaviour
         }
         //Debug.Log("generateLayer...:" + levelOfBlock);
 
-        for (int i = 0; i < layerChangingTimeing.Count - 1; i++)//현재 어느 레벨인지 확인하기
+        for (int i = layerChangingTimeing.Count - 1; i > 0; i--)//현재 어느 레벨인지 확인하기
         {
-            if (locate < layerChangingTimeing[i])
+            if (locate > layerChangingTimeing[i])
             {
-                levelOfBlock = i; 
+                levelOfBlock = i; //레벨 설정하기
                 break;
             }
         }
