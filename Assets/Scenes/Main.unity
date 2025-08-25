@@ -15387,10 +15387,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xWidth: 5
   yWidth: 5
-  height: 10
+  depth: 50
   blockPrefabs:
   - {fileID: 7307501949519165858, guid: 2ffa77e4a08cb0a419df3a3856b4b719, type: 3}
   - {fileID: 7325203099191009329, guid: 6695e725d4643a643a58b7b00ac71077, type: 3}
+  layerChangingTimeing:
+  - 0
+  - 5
 --- !u!4 &2077501795
 Transform:
   m_ObjectHideFlags: 0

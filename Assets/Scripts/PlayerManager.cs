@@ -107,11 +107,13 @@ public class PlayerManager : MonoBehaviour
         animator.SetFloat("DirectionZ", frontBack);
     }
 
-    private void CheckGrounded()
+    private void CheckGrounded()//블럭 위에 올라갔는지 체크하는것도 추가해주세요
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
         animator.SetBool("isGrounded", isGrounded);
     }
+
+    
 
     private void HandleJump()
     {

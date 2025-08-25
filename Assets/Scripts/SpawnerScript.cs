@@ -16,9 +16,8 @@ public class SpawnerScript : MonoBehaviour
 
     private GameObject allBlock;
 
-    //TODO: 위쪽 블럭 파괴 확인하여 아래쪽 미리 생성하기
-    //위쪽 블럭 파괴 체크는 블럭 콜라이더를 가진 자식 오브젝트로 블럭 콜라이더에 드랍템이 충돌시 생성 되는걸로 하면 될듯
-    //그냥 블럭 파괴될때 함수 호출해서 위치확인하는걸로 변경함
+    
+
 
     public static SpawnerScript Instance { get; private set; }//싱클톤 사용
 
@@ -37,13 +36,16 @@ public class SpawnerScript : MonoBehaviour
 
     private void Start()
     {
+        allBlock = new GameObject("Blocks");
+        allBlock.transform.position = Vector3.zero;
+
+
         for (int i = 0; i < 10; i++)//시직시 10개의 층 생성
         {
             generateBlockLayer(i);
         }
 
-        allBlock = new GameObject("allBlock");
-        allBlock.transform.position = Vector3.zero;
+        
 
     }
 
@@ -83,7 +85,7 @@ public class SpawnerScript : MonoBehaviour
                     Instantiate(blockPrefabs[levelOfBlock + ran],//랜덤으로 더 좋은 광물 생성
                         (gameObject.transform.position + new Vector3(i, 0 - currentDepth, j)),//위치 조정(스포너 기준으로 생성)
                         Quaternion.identity //회전(아마도 없어도 됨)
-                        /*, allBlock.transform*/);
+                        , allBlock.transform);
 
                     BlockController newBlockController = newBlock.GetComponent<BlockController>();
                     newBlockController.setLocate(currentDepth);//위치를 현재 깊이로 설정

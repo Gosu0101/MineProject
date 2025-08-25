@@ -18,7 +18,7 @@ public class BlockController : MonoBehaviour
     int hp;       // 블록의 내구도
     int value;    // 판매 시 가치
 
-    float locate; //현재 위치(스포너가 현재 어디까지 캐졌는지 확인용)
+    float locate = 0; //현재 위치(스포너가 현재 어디까지 캐졌는지 확인용)
 
 
 
@@ -63,7 +63,7 @@ public class BlockController : MonoBehaviour
         {
             //Debug.Log("Break");
             resourceDrop();//자원 드랍
-            SpawnerScript.Instance.refreshLayer(locate);
+            SpawnerScript.Instance.refreshLayer(locate);//땅 갱신
             gameObject.SetActive(false);//비활성화(후에 파괴로 변경가능)
             //GameObject.Destroy(gameObject);
         }
@@ -73,8 +73,8 @@ public class BlockController : MonoBehaviour
     {
         if (resourcePrefab != null)
         {
-            Debug.Log("자원 드랍");
-            Instantiate(resourcePrefab);
+            //Debug.Log("자원 드랍");
+            Instantiate(resourcePrefab, gameObject.transform.position, Quaternion.identity);
         }
         
     }
