@@ -1,36 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq; // Linq 사용을 위해 추가
 
 public class InventoryUI : MonoBehaviour
 {
-    public List<InventorySlot> slots = new List<InventorySlot>(); // 모든 인벤토리 슬롯 리스트
+    public List<InventorySlot> slots = new List<InventorySlot>();
 
     void Start()
     {
-        // 게임 시작 시 모든 슬롯을 일단 비워줍니다.
         ClearAllSlots();
     }
 
-    // 인벤토리 UI를 PlayerManager의 데이터에 맞춰 새로고침하는 핵심 함수
+    // 인벤토리 UI를 PlayerManager의 데이터에 맞춰 새로고침하는 핵심 함수 (수정)
     public void UpdateInventoryUI(Dictionary<BlockData, int> inventory)
     {
-        ClearAllSlots(); // 모든 슬롯을 비우고 다시 그립니다.
+        // Dictionary의 Key(아이템 종류)들을 리스트로 변환하여 순서를 고정시킵니다.
+        List<BlockData> itemList = inventory.Keys.ToList();
 
-        int slotIndex = 0;
-        // 인벤토리에 있는 모든 아이템에 대해 반복
-        foreach (var item in inventory)
+        // 모든 UI 슬롯을 순회합니다.
+        for (int i = 0; i < slots.Count; i++)
         {
-            // 슬롯 인덱스가 유효한 범위 내에 있다면
-            if (slotIndex < slots.Count)
+            // 현재 슬롯 인덱스(i)에 해당하는 아이템이 itemList에 존재한다면
+            if (i < itemList.Count)
             {
-                // 해당 슬롯에 아이템 정보(데이터, 개수)를 전달하여 그리도록 함
-                slots[slotIndex].DrawSlot(item.Key, item.Value);
-                slotIndex++;
+                // 해당 아이템의 정보와 수량을 가져옵니다.
+                BlockData currentItemData = itemList[i];
+                int currentItemCount = inventory[currentItemData];
+                // 슬롯에 아이템을 그립니다.
+                slots[i].DrawSlot(currentItemData, currentItemCount);
+            }
+            else // itemList에 더 이상 아이템이 없다면
+            {
+                // 나머지 슬롯들은 비워줍니다.
+                slots[i].ClearSlot();
             }
         }
     }
 
-    // 모든 슬롯을 깨끗하게 비우는 함수
     private void ClearAllSlots()
     {
         foreach (var slot in slots)
