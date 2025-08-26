@@ -10584,6 +10584,7 @@ GameObject:
   - component: {fileID: 670745806}
   - component: {fileID: 670745808}
   - component: {fileID: 670745807}
+  - component: {fileID: 670745809}
   m_Layer: 5
   m_Name: Gold
   m_TagString: Untagged
@@ -10650,6 +10651,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670745805}
   m_CullTransparentMesh: 1
+--- !u!114 &670745809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670745805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07325cf8f96885b418720356af9f851a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goldText: {fileID: 782172538}
 --- !u!1001 &674723165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16950,7 +16964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 1257613868}
-  goldUI: {fileID: 0}
+  goldUI: {fileID: 670745809}
   speed: 6
   jumpForce: 6
   mouseSensitivity: 110
