@@ -122,4 +122,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockData: {fileID: 11400000, guid: 6be8a8c17166a534493e5a228d9ed0f0, type: 2}
-  resourcePrefab: {fileID: 0}
+  resourcePrefab: {fileID: 8176659802140012148, guid: 6e0e0a52047cbb741b5f45c08c4f8b07, type: 3}

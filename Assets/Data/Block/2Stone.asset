@@ -17,3 +17,4 @@ MonoBehaviour:
   hardness: 5
   hp: 5
   value: 3
+  itemIcon: {fileID: 21300000, guid: 6269c53f7f33995498948bc1a9142625, type: 3}

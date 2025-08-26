@@ -1,26 +1,41 @@
 using UnityEngine;
-using UnityEngine.UI; // UI 관련 클래스 사용을 위해 추가
-using TMPro; // TextMeshPro 사용을 위해 추가
+using UnityEngine.UI;
+using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image itemIcon; // 아이템의 이미지를 표시할 UI Image 컴포넌트
-    public TextMeshProUGUI itemCountText; // 아이템 개수를 표시할 TextMeshPro UI 컴포넌트
+    public Image itemIcon;
+    public TextMeshProUGUI itemCountText;
 
-    // 슬롯을 비우는 함수
-    public void ClearSlot()
+    // 코드가 시작될 때 한 번만 색상 정보를 미리 저장해둡니다.
+    private Color opaqueColor = Color.white;
+    private Color transparentColor = new Color(1, 1, 1, 0);
+
+    void Awake()
     {
-        itemIcon.enabled = false; // 아이콘 비활성화
-        itemCountText.enabled = false; // 텍스트 비활성화
+        // 게임이 시작될 때 슬롯을 확실히 비우고 시작합니다.
+        ClearSlot();
     }
 
-    // 슬롯에 아이템 정보를 채우는 함수
+    // 슬롯을 비우는 함수 (수정)
+    public void ClearSlot()
+    {
+        // 아이콘의 색상을 완전히 투명하게 만들어 보이지 않게 합니다.
+        itemIcon.color = transparentColor;
+        // 텍스트는 비활성화합니다.
+        itemCountText.enabled = false;
+    }
+
+    // 슬롯에 아이템 정보를 채우는 함수 (수정)
     public void DrawSlot(BlockData data, int count)
     {
-        // BlockData에 아이템 아이콘 정보가 필요합니다. (아래 설명 참고)
-        // itemIcon.sprite = data.itemIcon; 
-        itemIcon.enabled = true; // 아이콘 활성화
-        itemCountText.text = count.ToString(); // 개수 표시
-        itemCountText.enabled = true; // 텍스트 활성화
+        // 아이콘의 스프라이트를 설정하고,
+        itemIcon.sprite = data.itemIcon;
+        // 색상을 다시 불투명하게 만들어 보이게 합니다.
+        itemIcon.color = opaqueColor;
+
+        // 텍스트를 활성화하고 내용을 설정합니다.
+        itemCountText.enabled = true;
+        itemCountText.text = count.ToString();
     }
 }
