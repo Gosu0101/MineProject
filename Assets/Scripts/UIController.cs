@@ -26,7 +26,7 @@ public class UIController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) UISetActive(1); // E키 누를 시, Inventory 활성화 or 비활성화
         if (Input.GetKeyDown(KeyCode.R)) UISetActive(2); // R키 누를 시, Item 활성화 or 비활성화
         if (Input.GetKeyDown(KeyCode.Escape)) UISetActive(3); // Esc키 누를 시, Pause 활성화 or 비활성화
-
+      
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectTools(0); // 상단 1번 키 누를 시, 1번 도구 선택
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectTools(1); // 상단 2번 키 누를 시, 2번 도구 선택
         if (Input.GetKeyDown(KeyCode.Alpha3)) SelectTools(2); // 상단 3번 키 누를 시, 3번 도구 선택
