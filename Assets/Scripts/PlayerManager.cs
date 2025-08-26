@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("오브젝트 연결")]
     [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private GoldUI goldUI; // [추가] GoldUI 스크립트 연결
 
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
@@ -43,7 +44,20 @@ public class PlayerManager : MonoBehaviour
     public PickaxeData currentPickaxe;
 
     [Header("재화 및 인벤토리")]
-    public int currentGold = 0;
+    private int _currentGold = 0;
+    public int currentGold
+    {
+        get { return _currentGold; } // 값을 가져갈 때
+        set // 값을 할당할 때
+        {
+            _currentGold = value;
+            // 값이 바뀔 때마다 자동으로 UI 업데이트 함수를 호출
+            if (goldUI != null)
+            {
+                goldUI.UpdateGoldText(_currentGold);
+            }
+        }
+    }
     public Dictionary<BlockData, int> inventory = new Dictionary<BlockData, int>();
 
     void Start()
@@ -52,6 +66,8 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        // 게임 시작 시 골드를 0으로 설정 (이때 UI도 자동으로 0으로 업데이트됨)
+        currentGold = 0;
     }
 
     void Update()
@@ -156,4 +172,37 @@ public class PlayerManager : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
+    // --- [추가] 판매 관련 함수 ---
+    public int SellAllItems()
+    {
+        int totalSaleValue = 0;
+
+        // 인벤토리에 있는 모든 아이템을 순회합니다.
+        foreach (var item in inventory)
+        {
+            BlockData data = item.Key;
+            int count = item.Value;
+            // (아이템 가치 * 아이템 개수)를 총 판매 금액에 더합니다.
+            totalSaleValue += data.value * count;
+        }
+
+        // 만약 판매할 아이템이 있다면
+        if (totalSaleValue > 0)
+        {
+            currentGold += totalSaleValue; // 번 돈을 현재 골드에 추가
+            inventory.Clear(); // 인벤토리 비우기
+
+            // 인벤토리 UI와 골드 UI를 즉시 갱신합니다.
+            if (inventoryUI != null)
+            {
+                inventoryUI.UpdateInventoryUI(inventory);
+            }
+            // TODO: 골드 UI 갱신 로직도 여기에 추가하면 좋습니다.
+        }
+
+        return totalSaleValue; // 총 얼마를 벌었는지 반환
+    }
+
+    // ... (기존 코드 하단은 동일) ...
+
 }
