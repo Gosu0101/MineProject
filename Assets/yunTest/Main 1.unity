@@ -21425,7 +21425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399e5ebb5d56e6b4899aeb7b26078b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saleFeedbackText: {fileID: 2101361784}
+  saleFeedbackText: {fileID: 0}
 --- !u!114 &1027416978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43072,8 +43072,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816bcd9f0ea32e04db2074b44cebcd9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPromptUI: {fileID: 1460201172}
-  shopPanelUI: {fileID: 1027416975}
+  interaction: {fileID: 1460201172}
+  store: {fileID: 1027416975}
+  main: {fileID: 1994441532}
+  cancel: {fileID: 1460201172}
 --- !u!135 &5005677152311778193
 SphereCollider:
   m_ObjectHideFlags: 0
