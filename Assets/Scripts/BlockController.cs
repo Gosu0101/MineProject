@@ -50,7 +50,7 @@ public class BlockController : MonoBehaviour
         if (damage >= hardness)//데미지가 경도보다 클 경우
         {
             hp -= damage - hardness; //곡갱이 효율관련 코드(추후 수정가능)
-            //Debug.Log("takeDamage :" + hp);
+            Debug.Log("takeDamage :" + hp);
         }
         else
         {

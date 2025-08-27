@@ -6,4 +6,5 @@ public class PickaxeData : ScriptableObject
     public string pickaxeName;
     public int power; // °î±ªÀÌÀÇ ÆÄ¿ö
     public int cost;  // ±¸¸Å ºñ¿ë
+    public GameObject pickaxePrefab; // [Ãß°¡] ÀÌ °î±ªÀÌÀÇ 3D ¸ğµ¨ ÇÁ¸®ÆÕ
 }

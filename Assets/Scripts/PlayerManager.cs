@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GoldUI goldUI;
     [SerializeField] private PickaxeController pickaxeController;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private PickaxeVisualController pickaxeVisualController;
 
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
@@ -74,6 +75,19 @@ public class PlayerManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         currentGold = 30000;
+
+        // [추가] 게임 시작 시 항상 첫 번째 등급의 곡괭이로 시작하도록 설정합니다.
+        if (pickaxeTiers != null && pickaxeTiers.tiers.Count > 0)
+        {
+            currentPickaxe = pickaxeTiers.tiers[0]; // 등급 목록의 첫 번째 아이템을 시작 곡괭이로 설정
+        }
+
+        // 게임 시작 시 현재 장착한 곡괭이 모델을 보여줍니다.
+        if (pickaxeVisualController != null)
+        {
+            pickaxeVisualController.ChangePickaxeVisual(currentPickaxe);
+        }
+
     }
 
     void Update()
@@ -187,6 +201,12 @@ public class PlayerManager : MonoBehaviour
         {
             currentGold -= nextTier.cost;
             currentPickaxe = nextTier;
+
+            // [추가] 강화 성공 후, 비주얼 컨트롤러에게 모델을 바꾸라고 명령합니다.
+            if (pickaxeVisualController != null)
+            {
+                pickaxeVisualController.ChangePickaxeVisual(currentPickaxe);
+            }
         }
     }
 

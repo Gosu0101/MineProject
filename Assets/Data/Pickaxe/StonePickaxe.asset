@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickaxeID: 102
   pickaxeName: Stone Pickaxe
-  power: 15
+  power: 16
   cost: 200
+  pickaxePrefab: {fileID: 5717450644949688769, guid: 44d0e962a0e6bf84d9d72303090a3d84, type: 3}
