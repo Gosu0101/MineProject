@@ -1,20 +1,14 @@
 using UnityEngine;
-using TMPro; // TextMeshPro를 사용하기 위해 추가
 
-public class SellerController : MonoBehaviour
+public class StoreUIController : MonoBehaviour
 {
     [Header("UI 오브젝트 연결")]
-    [SerializeField] private GameObject interactionPromptUI; // "((우클릭) 대화)" UI
-    [SerializeField] private GameObject shopPanelUI;       // 판매, 영역 구매 버튼이 있는 패널
+    [SerializeField] private GameObject interaction; // 상호작용 UI ON/OFF
+    [SerializeField] private GameObject store;       // 각 Store별 UI ON/OFF
+    [SerializeField] private GameObject main;        // Main UI ON/OFF
+    [SerializeField] private GameObject cancel;
 
     private bool isPlayerInRange = false; // 플레이어가 상호작용 범위 내에 있는지 여부
-
-    void Start()
-    {
-        // 게임 시작 시 UI들을 모두 꺼둡니다.
-        interactionPromptUI.SetActive(false);
-        shopPanelUI.SetActive(false);
-    }
 
     void Update()
     {
@@ -25,20 +19,22 @@ public class SellerController : MonoBehaviour
         }
     }
 
-    // 판매 창을 켜고 끄는 함수
+    // Store 창을 켜고 끄는 함수
     private void ToggleShopPanel()
     {
-        // 판매 창을 현재 상태의 반대로 설정 (켜져있으면 끄고, 꺼져있으면 켠다)
-        shopPanelUI.SetActive(!shopPanelUI.activeSelf);
+        // Store 창을 현재 상태의 반대로 설정 (켜져있으면 끄고, 꺼져있으면 켠다)
+        store.SetActive(!store.activeSelf);
+        main.SetActive(!main.activeSelf);
+        cancel.SetActive(!cancel.activeSelf);
 
-        // 판매 창이 켜졌다면, 게임을 잠시 멈추고 마우스 커서를 보이게 합니다.
-        if (shopPanelUI.activeSelf)
+        // Store 창이 켜졌다면, 게임을 잠시 멈추고 마우스 커서를 보이게 합니다.
+        if (store.activeSelf)
         {
             Time.timeScale = 0f; // 시간 정지
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        else // 판매 창이 꺼졌다면, 시간을 다시 흐르게 하고 커서를 숨깁니다.
+        else // Store 창이 꺼졌다면, 시간을 다시 흐르게 하고 커서를 숨깁니다.
         {
             Time.timeScale = 1f; // 시간 다시 흐름
             Cursor.lockState = CursorLockMode.Locked;
@@ -52,7 +48,7 @@ public class SellerController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = true;
-            interactionPromptUI.SetActive(true);
+            interaction.SetActive(true);
         }
     }
 
@@ -62,10 +58,10 @@ public class SellerController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            interactionPromptUI.SetActive(false);
+            interaction.SetActive(false);
 
             // 만약 상점 창을 열어둔 상태로 멀어진다면 강제로 닫습니다.
-            if (shopPanelUI.activeSelf)
+            if (store.activeSelf)
             {
                 ToggleShopPanel();
             }

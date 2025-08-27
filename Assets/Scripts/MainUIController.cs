@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
+public class MainUIController : MonoBehaviour
 {
     public List<GameObject> uiGameObject;
     public List<Text> uiText;
@@ -56,11 +56,9 @@ public class UIController : MonoBehaviour
             {
                 paused = true;
 
+                Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-
-                player.GetComponent<PlayerManager>().enabled = false;
-                playerrb.isKinematic = true;
             }
         }
     }
@@ -78,11 +76,9 @@ public class UIController : MonoBehaviour
     {
         uiGameObject[3].SetActive(false);
 
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        playerrb.isKinematic = false;
-        player.GetComponent<PlayerManager>().enabled = true;
 
         paused = false;
     }

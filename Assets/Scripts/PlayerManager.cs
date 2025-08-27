@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq; // [추가] Linq를 사용하여 Dictionary를 더 쉽게 다루기 위해 추가
 
 public class PlayerManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5.0f;
-    [SerializeField] private float mouseSensitivity = 100f;
+    [SerializeField] private float mouseSensitivity = 110f;
 
     [Header("플레이어 상태")]
     [SerializeField] private LayerMask groundLayer;
@@ -57,6 +58,7 @@ public class PlayerManager : MonoBehaviour
         set
         {
             _currentGold = value;
+            // 값이 바뀔 때마다 자동으로 UI 업데이트 함수를 호출
             if (goldUI != null)
             {
                 goldUI.UpdateGoldText(_currentGold);
@@ -90,19 +92,16 @@ public class PlayerManager : MonoBehaviour
         PlayerMove();
     }
 
-    // [수정] 채굴 속도 강화가 실제 애니메이션 속도에 반영되도록 수정
     private void HandleMining()
     {
         if (Input.GetMouseButton(0))
         {
             animator.SetBool("isMining", true);
-            // 애니메이터의 재생 속도를 강화된 속도로 설정합니다.
             animator.speed = miningSpeedModifier;
         }
         else
         {
             animator.SetBool("isMining", false);
-            // 채굴을 멈추면 애니메이터의 재생 속도를 원래대로(1) 되돌립니다.
             animator.speed = 1f;
         }
     }
@@ -122,7 +121,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // --- 나머지 모든 함수는 기존과 동일 ---
     public void AddItem(BlockData blockData, int amount)
     {
         if (inventory.Count >= inventorySize && !inventory.ContainsKey(blockData))
@@ -135,16 +133,41 @@ public class PlayerManager : MonoBehaviour
         if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
     }
 
+    // [수정] 기존의 '모두 판매' 기능
     public int SellAllItems()
     {
         int totalSaleValue = 0;
         foreach (var item in inventory) { totalSaleValue += item.Key.value * item.Value; }
+        
         if (totalSaleValue > 0)
         {
             currentGold += totalSaleValue;
-            inventory.Clear();
+            inventory.Clear(); // 모든 아이템을 팔았으므로 인벤토리를 비웁니다.
             if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
         }
+        return totalSaleValue;
+    }
+
+    // [추가] ljwTest 버전의 '특정 아이템 판매' 기능 (버그 수정 포함)
+    public int SellSpecificItem(int materialID)
+    {
+        int totalSaleValue = 0;
+        
+        // 인벤토리에서 해당 materialID를 가진 아이템을 찾습니다.
+        BlockData itemToSell = inventory.Keys.FirstOrDefault(data => data.blockID == materialID);
+
+        // 아이템을 찾았다면
+        if (itemToSell != null)
+        {
+            int count = inventory[itemToSell];
+            totalSaleValue = itemToSell.value * count;
+
+            currentGold += totalSaleValue;
+            inventory.Remove(itemToSell); // 해당 아이템만 인벤토리에서 제거합니다.
+
+            if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
+        }
+
         return totalSaleValue;
     }
 
@@ -175,8 +198,6 @@ public class PlayerManager : MonoBehaviour
             currentGold -= cost;
             inventorySize += (int)data.valueIncrease;
             bagLevel++;
-
-            // [추가] 가방 강화 후 UI를 즉시 갱신하여 슬롯이 열리는 것을 보여줍니다.
             if (inventoryUI != null)
             {
                 inventoryUI.UpdateInventoryUI(inventory);
