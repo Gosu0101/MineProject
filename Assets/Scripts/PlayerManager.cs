@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.2f;
     private bool isGrounded;
 
+
     private Rigidbody rb;
     private Animator animator;
 
@@ -127,6 +128,9 @@ public class PlayerManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, miningDistance, blockLayer))
         {
+            // [추가] 타격 효과음 재생
+            AudioManager.Instance.PlayMiningHitSound();
+
             BlockController block = hit.collider.GetComponent<BlockController>();
             if (block != null)
             {
@@ -246,6 +250,12 @@ public class PlayerManager : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
     }
 
+    // [추가] 애니메이션 이벤트가 호출할 함수
+    // 이 함수의 이름은 나중에 사용되니 기억해두세요.
+    public void OnFootstep()
+    {
+        AudioManager.Instance.PlayFootstepSound();
+    }
     private void PlayerMove()
     {
         Vector3 moveDirection = transform.right * leftRight + transform.forward * frontBack;
