@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour
 {
-    // --- 싱글톤 설정 ---
     public static PlayerManager Instance { get; private set; }
 
     void Awake()
@@ -13,11 +12,12 @@ public class PlayerManager : MonoBehaviour
         else
             Instance = this;
     }
-    // --------------------
 
     [Header("오브젝트 연결")]
     [SerializeField] private InventoryUI inventoryUI;
-    [SerializeField] private GoldUI goldUI; // [추가] GoldUI 스크립트 연결
+    [SerializeField] private GoldUI goldUI;
+    [SerializeField] private PickaxeController pickaxeController;
+    [SerializeField] private Camera mainCamera;
 
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
@@ -29,8 +29,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.2f;
     private bool isGrounded;
 
-    [Header("오브젝트 연결")]
-    [SerializeField] private Camera mainCamera;
     private Rigidbody rb;
     private Animator animator;
 
@@ -43,15 +41,22 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private LayerMask blockLayer;
     public PickaxeData currentPickaxe;
 
-    [Header("재화 및 인벤토리")]
+    [Header("강화 데이터")]
+    [SerializeField] private PickaxeTierList pickaxeTiers;
+
+    [Header("부가 능력")]
+    public int inventorySize = 2;
+    public int bagLevel = 0;
+    public float miningSpeedModifier = 1.0f;
+    public int speedLevel = 0;
+
     private int _currentGold = 0;
     public int currentGold
     {
-        get { return _currentGold; } // 값을 가져갈 때
-        set // 값을 할당할 때
+        get { return _currentGold; }
+        set
         {
             _currentGold = value;
-            // 값이 바뀔 때마다 자동으로 UI 업데이트 함수를 호출
             if (goldUI != null)
             {
                 goldUI.UpdateGoldText(_currentGold);
@@ -66,8 +71,7 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        // 게임 시작 시 골드를 0으로 설정 (이때 UI도 자동으로 0으로 업데이트됨)
-        currentGold = 0;
+        currentGold = 30000;
     }
 
     void Update()
@@ -79,8 +83,6 @@ public class PlayerManager : MonoBehaviour
         CheckGrounded();
         HandleJump();
         HandleMining();
-
-        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * miningDistance, Color.red);
     }
 
     private void FixedUpdate()
@@ -88,23 +90,23 @@ public class PlayerManager : MonoBehaviour
         PlayerMove();
     }
 
-    // [수정] 꾹 누르는 동안 애니메이션을 반복하도록 로직 변경
+    // [수정] 채굴 속도 강화가 실제 애니메이션 속도에 반영되도록 수정
     private void HandleMining()
     {
-        // 마우스 왼쪽 버튼을 '누르고 있는 동안' true
         if (Input.GetMouseButton(0))
         {
-            // isMining 파라미터를 true로 설정하여 채굴 애니메이션을 재생
             animator.SetBool("isMining", true);
+            // 애니메이터의 재생 속도를 강화된 속도로 설정합니다.
+            animator.speed = miningSpeedModifier;
         }
-        else // 마우스 버튼을 떼면
+        else
         {
-            // isMining 파라미터를 false로 설정하여 채굴 애니메이션을 중단
             animator.SetBool("isMining", false);
+            // 채굴을 멈추면 애니메이터의 재생 속도를 원래대로(1) 되돌립니다.
+            animator.speed = 1f;
         }
     }
 
-    // 애니메이션 이벤트가 호출할 실제 데미지를 주는 함수 (기존과 동일)
     public void ApplyMiningDamage()
     {
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
@@ -120,24 +122,79 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    // --- 나머지 모든 함수는 기존과 동일 ---
     public void AddItem(BlockData blockData, int amount)
     {
-        if (inventory.ContainsKey(blockData))
+        if (inventory.Count >= inventorySize && !inventory.ContainsKey(blockData))
         {
-            inventory[blockData] += amount;
+            Debug.Log("가방이 가득 찼습니다!");
+            return;
         }
-        else
-        {
-            inventory.Add(blockData, amount);
-        }
+        if (inventory.ContainsKey(blockData)) { inventory[blockData] += amount; }
+        else { inventory.Add(blockData, amount); }
+        if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
+    }
 
-        if (inventoryUI != null)
+    public int SellAllItems()
+    {
+        int totalSaleValue = 0;
+        foreach (var item in inventory) { totalSaleValue += item.Key.value * item.Value; }
+        if (totalSaleValue > 0)
         {
-            inventoryUI.UpdateInventoryUI(inventory);
+            currentGold += totalSaleValue;
+            inventory.Clear();
+            if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
+        }
+        return totalSaleValue;
+    }
+
+    public PickaxeData GetNextPickaxeTier()
+    {
+        for (int i = 0; i < pickaxeTiers.tiers.Count - 1; i++)
+        {
+            if (pickaxeTiers.tiers[i] == currentPickaxe) { return pickaxeTiers.tiers[i + 1]; }
+        }
+        return null;
+    }
+
+    public void UpgradePickaxe()
+    {
+        PickaxeData nextTier = GetNextPickaxeTier();
+        if (nextTier != null && currentGold >= nextTier.cost)
+        {
+            currentGold -= nextTier.cost;
+            currentPickaxe = nextTier;
         }
     }
 
-    // --- 나머지 이동, 점프 관련 함수들 (기존과 동일) ---
+    public void UpgradeBag(UpgradeData data)
+    {
+        int cost = (int)(data.baseCost * Mathf.Pow(data.costIncreaseRate, bagLevel));
+        if (currentGold >= cost)
+        {
+            currentGold -= cost;
+            inventorySize += (int)data.valueIncrease;
+            bagLevel++;
+
+            // [추가] 가방 강화 후 UI를 즉시 갱신하여 슬롯이 열리는 것을 보여줍니다.
+            if (inventoryUI != null)
+            {
+                inventoryUI.UpdateInventoryUI(inventory);
+            }
+        }
+    }
+
+    public void UpgradeSpeed(UpgradeData data)
+    {
+        int cost = (int)(data.baseCost * Mathf.Pow(data.costIncreaseRate, speedLevel));
+        if (currentGold >= cost)
+        {
+            currentGold -= cost;
+            miningSpeedModifier += data.valueIncrease;
+            speedLevel++;
+        }
+    }
+
     private void HandleMouseLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -172,37 +229,4 @@ public class PlayerManager : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-    // --- [추가] 판매 관련 함수 ---
-    public int SellAllItems()
-    {
-        int totalSaleValue = 0;
-
-        // 인벤토리에 있는 모든 아이템을 순회합니다.
-        foreach (var item in inventory)
-        {
-            BlockData data = item.Key;
-            int count = item.Value;
-            // (아이템 가치 * 아이템 개수)를 총 판매 금액에 더합니다.
-            totalSaleValue += data.value * count;
-        }
-
-        // 만약 판매할 아이템이 있다면
-        if (totalSaleValue > 0)
-        {
-            currentGold += totalSaleValue; // 번 돈을 현재 골드에 추가
-            inventory.Clear(); // 인벤토리 비우기
-
-            // 인벤토리 UI와 골드 UI를 즉시 갱신합니다.
-            if (inventoryUI != null)
-            {
-                inventoryUI.UpdateInventoryUI(inventory);
-            }
-            // TODO: 골드 UI 갱신 로직도 여기에 추가하면 좋습니다.
-        }
-
-        return totalSaleValue; // 총 얼마를 벌었는지 반환
-    }
-
-    // ... (기존 코드 하단은 동일) ...
-
 }
