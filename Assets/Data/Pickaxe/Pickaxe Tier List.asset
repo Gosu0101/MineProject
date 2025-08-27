@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9463cce7e5248a040804603351576bef, type: 3}
+  m_Name: Pickaxe Tier List
+  m_EditorClassIdentifier: 
+  tiers:
+  - {fileID: 11400000, guid: 73f07dc2a1aa5484eb867ef1ea5cfe42, type: 2}
+  - {fileID: 11400000, guid: e8a7fa461b8d3114faf2b92810d39554, type: 2}
+  - {fileID: 11400000, guid: 655306506c364c2439e577ac1513e4f1, type: 2}
+  - {fileID: 11400000, guid: e0a3628ca44d03541832e11044047e4e, type: 2}
