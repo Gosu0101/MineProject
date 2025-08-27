@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -174,7 +175,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
     // --- [추가] 판매 관련 함수 ---
-    public int SellAllItems()
+    public int SellAllItems(int material)
     {
         int totalSaleValue = 0;
 
@@ -183,15 +184,19 @@ public class PlayerManager : MonoBehaviour
         {
             BlockData data = item.Key;
             int count = item.Value;
+
+            if (data.blockID != material) continue;
+
             // (아이템 가치 * 아이템 개수)를 총 판매 금액에 더합니다.
             totalSaleValue += data.value * count;
+            //inventory.Remove(data);
         }
 
         // 만약 판매할 아이템이 있다면
         if (totalSaleValue > 0)
         {
             currentGold += totalSaleValue; // 번 돈을 현재 골드에 추가
-            inventory.Clear(); // 인벤토리 비우기
+            //inventory.Clear(); // 인벤토리 비우기
 
             // 인벤토리 UI와 골드 UI를 즉시 갱신합니다.
             if (inventoryUI != null)

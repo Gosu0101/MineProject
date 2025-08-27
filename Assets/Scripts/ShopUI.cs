@@ -8,12 +8,12 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private Text saleFeedbackText; // "총 110 골드를 획득했습니다!" 텍스트
 
     // '판매' 버튼을 클릭했을 때 호출될 함수
-    public void OnSellButtonClick()
+    public void OnSellButtonClick(int material)
     {
         if (PlayerManager.Instance != null)
         {
             // PlayerManager에게 아이템을 모두 판매하고, 얼마를 벌었는지 돌려받습니다.
-            int totalEarnedGold = PlayerManager.Instance.SellAllItems();
+            int totalEarnedGold = PlayerManager.Instance.SellAllItems(material);
 
             saleFeedbackText.gameObject.SetActive(true);
 
