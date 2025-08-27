@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5.0f;
-    [SerializeField] private float mouseSensitivity = 100f;
+    [SerializeField] private float mouseSensitivity = 110f;
 
     [Header("플레이어 상태")]
     [SerializeField] private LayerMask groundLayer;
@@ -51,6 +51,7 @@ public class PlayerManager : MonoBehaviour
         set // 값을 할당할 때
         {
             _currentGold = value;
+
             // 값이 바뀔 때마다 자동으로 UI 업데이트 함수를 호출
             if (goldUI != null)
             {

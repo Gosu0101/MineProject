@@ -22788,10 +22788,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 1257613868}
-  goldUI: {fileID: 0}
+  goldUI: {fileID: 1024222187}
   speed: 6
   jumpForce: 6
-  mouseSensitivity: 110
+  mouseSensitivity: 300
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

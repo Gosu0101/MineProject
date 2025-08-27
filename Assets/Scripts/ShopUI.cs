@@ -7,11 +7,6 @@ public class ShopUI : MonoBehaviour
     [Header("UI 오브젝트 연결")]
     [SerializeField] private Text saleFeedbackText; // "총 110 골드를 획득했습니다!" 텍스트
 
-    void Start()
-    {
-        
-    }
-
     // '판매' 버튼을 클릭했을 때 호출될 함수
     public void OnSellButtonClick()
     {
