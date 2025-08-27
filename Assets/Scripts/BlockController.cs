@@ -1,7 +1,7 @@
 //=====================================================================
 //이 스크립트는 블럭 데이터 설정,블럭의 파괴와, 아이템 드랍 관련 스크립트입니다.
 //=====================================================================
-
+//TODO: 채굴실패 이펙트와 체력 비례로 금이 가는 코드
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
@@ -51,6 +51,10 @@ public class BlockController : MonoBehaviour
         {
             hp -= damage - hardness; //곡갱이 효율관련 코드(추후 수정가능)
             //Debug.Log("takeDamage :" + hp);
+        }
+        else
+        {
+            //채굴 실패 이펙트
         }
 
         // [추가된 코드] 체력이 0 이하로 떨어졌다면 파괴 함수를 즉시 호출

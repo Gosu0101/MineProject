@@ -1,12 +1,12 @@
 using Mono.Cecil;
 using UnityEngine;
-
+//TODO: 생성 되고 카운트 다운 추가, 이펙트 추가
 public class BombController : MonoBehaviour
 {
     public float radius = 1f;
     public LayerMask blockLayer;
     public float defaultPower = 1;
-    //TODO: 생성 되고 카운트 다운 추가, 이펙트 추가
+    
     void OnAttack()
     {
         Explosive();

@@ -4,7 +4,7 @@ public class ItemController : MonoBehaviour
 {
     // [추가된 코드] 이 아이템이 어떤 블록의 정보를 담고 있는지 저장할 변수
     public BlockData blockData;
-    //TODO: 아이템 획득, 생성될때 옆으로 살짝 튕기기
+    
 
     Rigidbody rb;
     [SerializeField] private LayerMask blockLayer;
