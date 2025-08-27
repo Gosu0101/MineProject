@@ -12,9 +12,12 @@ public class ShopUI : MonoBehaviour
     {
         if (PlayerManager.Instance != null)
         {
+            int totalEarnedGold = 0;
+
             // PlayerManager에게 아이템을 모두 판매하고, 얼마를 벌었는지 돌려받습니다.
-            int totalEarnedGold = PlayerManager.Instance.SellAllItems();
-                
+            if (material == 0) totalEarnedGold = PlayerManager.Instance.SellAllItems();
+            else totalEarnedGold = PlayerManager.Instance.SellSpecificItem(material);
+
             saleFeedbackText.gameObject.SetActive(true);
 
             // 만약 1골드라도 벌었다면 피드백을 표시합니다.
