@@ -7,4 +7,5 @@ public class BlockData : ScriptableObject
     public int hardness; // 블록의 경도 (요구 곡괭이 파워)
     public int hp;       // 블록의 내구도
     public int value;    // 판매 시 가치
+    public Sprite itemIcon; //인벤 아이콘
 }
