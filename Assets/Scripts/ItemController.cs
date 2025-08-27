@@ -29,8 +29,8 @@ public class ItemController : MonoBehaviour
         onGround = Physics.Raycast(transform.position, Vector3.down, 0.25f, groundLayer);
         if (onBlock || onGround)
         {
-            // [수정된 코드] 기존 코드는 계속 위로 올라가려는 문제가 있어 주석 처리
-            // rb.linearVelocity = new Vector3(0, 1f, 0);
+            
+            rb.linearVelocity = new Vector3(0, 0.2f, 0);//[수정]0.2로 하면 튀어오르지도 않고 제자리에 잘 있음
         }
 
         transform.Rotate(new Vector3(0, 30, 0) * Time.deltaTime);
