@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
+using System.Collections.Generic;
+using System.Linq; // [추가] Linq를 사용하여 Dictionary를 더 쉽게 다루기 위해 추가
 
 public class PlayerManager : MonoBehaviour
 {
-    // --- 싱글톤 설정 ---
     public static PlayerManager Instance { get; private set; }
 
     void Awake()
@@ -14,11 +13,12 @@ public class PlayerManager : MonoBehaviour
         else
             Instance = this;
     }
-    // --------------------
 
     [Header("오브젝트 연결")]
     [SerializeField] private InventoryUI inventoryUI;
-    [SerializeField] private GoldUI goldUI; // [추가] GoldUI 스크립트 연결
+    [SerializeField] private GoldUI goldUI;
+    [SerializeField] private PickaxeController pickaxeController;
+    [SerializeField] private Camera mainCamera;
 
     [Header("플레이어 조작")]
     [SerializeField] private float speed = 5f;
@@ -30,8 +30,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.2f;
     private bool isGrounded;
 
-    [Header("오브젝트 연결")]
-    [SerializeField] private Camera mainCamera;
     private Rigidbody rb;
     private Animator animator;
 
@@ -44,15 +42,22 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private LayerMask blockLayer;
     public PickaxeData currentPickaxe;
 
-    [Header("재화 및 인벤토리")]
+    [Header("강화 데이터")]
+    [SerializeField] private PickaxeTierList pickaxeTiers;
+
+    [Header("부가 능력")]
+    public int inventorySize = 2;
+    public int bagLevel = 0;
+    public float miningSpeedModifier = 1.0f;
+    public int speedLevel = 0;
+
     private int _currentGold = 0;
     public int currentGold
     {
-        get { return _currentGold; } // 값을 가져갈 때
-        set // 값을 할당할 때
+        get { return _currentGold; }
+        set
         {
             _currentGold = value;
-
             // 값이 바뀔 때마다 자동으로 UI 업데이트 함수를 호출
             if (goldUI != null)
             {
@@ -68,8 +73,7 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        // 게임 시작 시 골드를 0으로 설정 (이때 UI도 자동으로 0으로 업데이트됨)
-        currentGold = 0;
+        currentGold = 30000;
     }
 
     void Update()
@@ -81,8 +85,6 @@ public class PlayerManager : MonoBehaviour
         CheckGrounded();
         HandleJump();
         HandleMining();
-
-        Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * miningDistance, Color.red);
     }
 
     private void FixedUpdate()
@@ -90,23 +92,20 @@ public class PlayerManager : MonoBehaviour
         PlayerMove();
     }
 
-    // [수정] 꾹 누르는 동안 애니메이션을 반복하도록 로직 변경
     private void HandleMining()
     {
-        // 마우스 왼쪽 버튼을 '누르고 있는 동안' true
         if (Input.GetMouseButton(0))
         {
-            // isMining 파라미터를 true로 설정하여 채굴 애니메이션을 재생
             animator.SetBool("isMining", true);
+            animator.speed = miningSpeedModifier;
         }
-        else // 마우스 버튼을 떼면
+        else
         {
-            // isMining 파라미터를 false로 설정하여 채굴 애니메이션을 중단
             animator.SetBool("isMining", false);
+            animator.speed = 1f;
         }
     }
 
-    // 애니메이션 이벤트가 호출할 실제 데미지를 주는 함수 (기존과 동일)
     public void ApplyMiningDamage()
     {
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
@@ -124,22 +123,99 @@ public class PlayerManager : MonoBehaviour
 
     public void AddItem(BlockData blockData, int amount)
     {
-        if (inventory.ContainsKey(blockData))
+        if (inventory.Count >= inventorySize && !inventory.ContainsKey(blockData))
         {
-            inventory[blockData] += amount;
+            Debug.Log("가방이 가득 찼습니다!");
+            return;
         }
-        else
+        if (inventory.ContainsKey(blockData)) { inventory[blockData] += amount; }
+        else { inventory.Add(blockData, amount); }
+        if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
+    }
+
+    // [수정] 기존의 '모두 판매' 기능
+    public int SellAllItems()
+    {
+        int totalSaleValue = 0;
+        foreach (var item in inventory) { totalSaleValue += item.Key.value * item.Value; }
+        
+        if (totalSaleValue > 0)
         {
-            inventory.Add(blockData, amount);
+            currentGold += totalSaleValue;
+            inventory.Clear(); // 모든 아이템을 팔았으므로 인벤토리를 비웁니다.
+            if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
+        }
+        return totalSaleValue;
+    }
+
+    // [추가] ljwTest 버전의 '특정 아이템 판매' 기능 (버그 수정 포함)
+    public int SellSpecificItem(int materialID)
+    {
+        int totalSaleValue = 0;
+        
+        // 인벤토리에서 해당 materialID를 가진 아이템을 찾습니다.
+        BlockData itemToSell = inventory.Keys.FirstOrDefault(data => data.blockID == materialID);
+
+        // 아이템을 찾았다면
+        if (itemToSell != null)
+        {
+            int count = inventory[itemToSell];
+            totalSaleValue = itemToSell.value * count;
+
+            currentGold += totalSaleValue;
+            inventory.Remove(itemToSell); // 해당 아이템만 인벤토리에서 제거합니다.
+
+            if (inventoryUI != null) { inventoryUI.UpdateInventoryUI(inventory); }
         }
 
-        if (inventoryUI != null)
+        return totalSaleValue;
+    }
+
+    public PickaxeData GetNextPickaxeTier()
+    {
+        for (int i = 0; i < pickaxeTiers.tiers.Count - 1; i++)
         {
-            inventoryUI.UpdateInventoryUI(inventory);
+            if (pickaxeTiers.tiers[i] == currentPickaxe) { return pickaxeTiers.tiers[i + 1]; }
+        }
+        return null;
+    }
+
+    public void UpgradePickaxe()
+    {
+        PickaxeData nextTier = GetNextPickaxeTier();
+        if (nextTier != null && currentGold >= nextTier.cost)
+        {
+            currentGold -= nextTier.cost;
+            currentPickaxe = nextTier;
         }
     }
 
-    // --- 나머지 이동, 점프 관련 함수들 (기존과 동일) ---
+    public void UpgradeBag(UpgradeData data)
+    {
+        int cost = (int)(data.baseCost * Mathf.Pow(data.costIncreaseRate, bagLevel));
+        if (currentGold >= cost)
+        {
+            currentGold -= cost;
+            inventorySize += (int)data.valueIncrease;
+            bagLevel++;
+            if (inventoryUI != null)
+            {
+                inventoryUI.UpdateInventoryUI(inventory);
+            }
+        }
+    }
+
+    public void UpgradeSpeed(UpgradeData data)
+    {
+        int cost = (int)(data.baseCost * Mathf.Pow(data.costIncreaseRate, speedLevel));
+        if (currentGold >= cost)
+        {
+            currentGold -= cost;
+            miningSpeedModifier += data.valueIncrease;
+            speedLevel++;
+        }
+    }
+
     private void HandleMouseLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -174,7 +250,9 @@ public class PlayerManager : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
+
     // --- [추가] 판매 관련 함수 ---
+    /*
     public int SellAllItems()
     {
         int totalSaleValue = 0;
@@ -205,7 +283,6 @@ public class PlayerManager : MonoBehaviour
 
         return totalSaleValue; // 총 얼마를 벌었는지 반환
     }
-
+    */
     // ... (기존 코드 하단은 동일) ...
-
 }
