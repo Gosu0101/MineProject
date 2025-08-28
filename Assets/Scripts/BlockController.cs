@@ -1,7 +1,7 @@
 //=====================================================================
 //이 스크립트는 블럭 데이터 설정,블럭의 파괴와, 아이템 드랍 관련 스크립트입니다.
 //=====================================================================
-
+//TODO: 채굴실패 이펙트와 체력 비례로 금이 가는 코드
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
@@ -12,9 +12,9 @@ public class BlockController : MonoBehaviour
 
     int blockID;
     string blockName;
-    int hardness; // 블록의 경도 (요구 곡괭이 파워)
-    int hp;       // 블록의 내구도
-    int value;    // 판매 시 가치
+    float hardness; // 블록의 경도 (요구 곡괭이 파워)
+    float hp;       // 블록의 내구도
+    float value;    // 판매 시 가치
 
     float locate = 0; //현재 위치(스포너가 현재 어디까지 캐졌는지 확인용)
 
@@ -27,9 +27,9 @@ public class BlockController : MonoBehaviour
         {
             blockID = blockData.blockID;
             blockName = blockData.blockName;
-            hardness = blockData.hardness;
-            hp = blockData.hp;
-            value = blockData.value;
+            hardness = (float)blockData.hardness;
+            hp = (float)blockData.hp;
+            value = (float)blockData.value;
         }
         else
         {
@@ -38,7 +38,7 @@ public class BlockController : MonoBehaviour
         }
     }
 
-    public void takeDamage(int damage, RaycastHit hit)//플레이어 레이케스트에 맞았는지 확인하는 함수
+    public void takeDamage(float damage, RaycastHit hit)//플레이어 레이케스트에 맞았는지 확인하는 함수
     {
         // [추가된 코드] 이미 파괴되었거나, Ray에 맞은 오브젝트가 자신이 아니면 함수 종료
         if (isDestroyed || hit.collider.gameObject != this.gameObject)
@@ -49,8 +49,12 @@ public class BlockController : MonoBehaviour
         //Debug.Log("takeDamageStart");
         if (damage >= hardness)//데미지가 경도보다 클 경우
         {
-            hp--; // [수정된 코드] 데미지 계산식을 단순화하여 체력을 1씩 감소
-            //Debug.Log("takeDamage :" + hp);
+            hp -= (damage - hardness); //곡갱이 효율관련 코드(추후 수정가능)
+            Debug.Log("takeDamage :" + hp);
+        }
+        else
+        {
+            //채굴 실패 이펙트
         }
 
         // [추가된 코드] 체력이 0 이하로 떨어졌다면 파괴 함수를 즉시 호출
@@ -69,7 +73,8 @@ public class BlockController : MonoBehaviour
     private void DestroyBlock()
     {
         isDestroyed = true; // 파괴 상태로 변경하여 중복 호출 방지
-
+        // [추가] 블록 파괴 효과음 재생
+        AudioManager.Instance.PlayBlockBreakSound();
         resourceDrop();//자원 드랍
 
         // SpawnerScript 인스턴스가 존재하는지 확인하여 오류를 방지
@@ -111,17 +116,21 @@ public class BlockController : MonoBehaviour
     {
         return blockName;
     }
-    public int GetBlockHardness()
+    public float GetBlockHardness()
     {
         return hardness;
     }
-    public int GetBlockHp()
+    public float GetBlockHp()
     {
         return hp;
     }
     public int GetBlockMaxHp()
     {
         return blockData.hp;
+    }
+    public float GetBlockValue()
+    {
+        return value;
     }
 
     public void setLocate(float n)//블럭의 현재 높이를 설정

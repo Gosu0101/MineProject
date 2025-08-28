@@ -120,21 +120,37 @@ public class UpgradeUI : MonoBehaviour
     // --- 버튼 클릭 함수들 (수정된 부분) ---
     public void OnPickaxeUpgradeClick()
     {
+        // [수정] 강화 성공 여부를 확인하고 효과음을 재생합니다.
+        int goldBefore = PlayerManager.Instance.currentGold;
         PlayerManager.Instance.UpgradePickaxe();
+        if (goldBefore > PlayerManager.Instance.currentGold) // 골드가 소모되었다면 성공
+        {
+            AudioManager.Instance.PlayUpgradeSuccessSound();
+        }
         UpdateAllTabs();
     }
 
     public void OnBagUpgradeClick()
     {
+        int goldBefore = PlayerManager.Instance.currentGold;
         // PlayerManager에게 어떤 데이터로 강화할지 알려줍니다.
         PlayerManager.Instance.UpgradeBag(bagUpgradeData);
+        if (goldBefore > PlayerManager.Instance.currentGold) // 골드가 소모되었다면 성공
+        {
+            AudioManager.Instance.PlayUpgradeSuccessSound();
+        }
         UpdateAllTabs();
     }
 
     public void OnSpeedUpgradeClick()
     {
+        int goldBefore = PlayerManager.Instance.currentGold;
         // PlayerManager에게 어떤 데이터로 강화할지 알려줍니다.
         PlayerManager.Instance.UpgradeSpeed(speedUpgradeData);
+        if (goldBefore > PlayerManager.Instance.currentGold) // 골드가 소모되었다면 성공
+        {
+            AudioManager.Instance.PlayUpgradeSuccessSound();
+        }
         UpdateAllTabs();
     }
 }
