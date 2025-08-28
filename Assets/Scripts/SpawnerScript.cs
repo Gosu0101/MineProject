@@ -88,7 +88,9 @@ public class SpawnerScript : MonoBehaviour
             if (locate >= layerChangingTimeing[i]) // [수정] > 조건을 >= 으로 변경하여 정확한 깊이에서 레벨이 바뀌도록 수정
             {
                 levelOfBlock = i;
+                Debug.Log("levelOfBlock :" + i);
                 break;
+                
             }
         }
 
@@ -136,10 +138,10 @@ public class SpawnerScript : MonoBehaviour
 
     public void refreshLayer(float locate)
     {
-        if (locate < currentDepth)
+        if (locate + 10> currentDepth)
         {
             generateBlockLayer((int)currentDepth);
-            // Debug.Log("refreshLayer :" + locate); // 너무 자주 호출될 수 있으므로 주석 처리
+            Debug.Log("refreshLayer :" + locate); // 너무 자주 호출될 수 있으므로 주석 처리
         }
     }
 }

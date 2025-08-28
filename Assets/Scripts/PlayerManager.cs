@@ -75,7 +75,7 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        currentGold = 30000;
+        currentGold = 999999999;
 
         // [추가] 게임 시작 시 항상 첫 번째 등급의 곡괭이로 시작하도록 설정합니다.
         if (pickaxeTiers != null && pickaxeTiers.tiers.Count > 0)
@@ -101,6 +101,7 @@ public class PlayerManager : MonoBehaviour
         HandleJump();
         HandleMining();
         HandleInteraction();
+        teleportToGround();
     }
 
     private void FixedUpdate()
@@ -303,38 +304,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // --- [추가] 판매 관련 함수 ---
-    /*
-    public int SellAllItems()
+    private void teleportToGround()
     {
-        int totalSaleValue = 0;
-
-        // 인벤토리에 있는 모든 아이템을 순회합니다.
-        foreach (var item in inventory)
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            BlockData data = item.Key;
-            int count = item.Value;
-
-            // (아이템 가치 * 아이템 개수)를 총 판매 금액에 더합니다.
-            totalSaleValue += data.value * count;
+            transform.position = new Vector3(0, 3, 0);
         }
-
-        // 만약 판매할 아이템이 있다면
-        if (totalSaleValue > 0)
-        {
-            currentGold += totalSaleValue; // 번 돈을 현재 골드에 추가
-            inventory.Clear(); // 인벤토리 비우기
-
-            // 인벤토리 UI와 골드 UI를 즉시 갱신합니다.
-            if (inventoryUI != null)
-            {
-                inventoryUI.UpdateInventoryUI(inventory);
-            }
-            // TODO: 골드 UI 갱신 로직도 여기에 추가하면 좋습니다.
-        }
-
-        return totalSaleValue; // 총 얼마를 벌었는지 반환
+        
     }
-    */
-    // ... (기존 코드 하단은 동일) ...
 }

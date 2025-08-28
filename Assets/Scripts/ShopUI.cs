@@ -7,7 +7,7 @@ public class ShopUI : MonoBehaviour
 {
     [Header("UI 오브젝트 연결")]
     [SerializeField] private Text saleFeedbackText; // 상단 텍스트 출력
-    [SerializeField] private List<GameObject> upgradeUI; // 강화소 UI 저장
+    //[SerializeField] private List<GameObject> upgradeUI; // 강화소 UI 저장
 
     // '판매' 버튼을 클릭했을 때 호출될 함수
     public void OnSellButtonClick(int material)
@@ -32,17 +32,6 @@ public class ShopUI : MonoBehaviour
                 StartCoroutine(ShowSaleFeedback("You don't have any items to sell."));
             }
         }
-    }
-
-    public void UpgradeChangeButtonClick(int mode)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            upgradeUI[i].SetActive(false);
-            //upgradeUI[i + 3].GetComponent<Outline>();
-        }
-
-        upgradeUI[mode].SetActive(true);
     }
 
     // 판매 결과를 잠시 보여주고 사라지게 하는 코루틴
