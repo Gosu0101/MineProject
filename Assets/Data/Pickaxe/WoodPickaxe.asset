@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickaxeID: 101
   pickaxeName: Wood Pickaxe
-  power: 5
+  power: 6
   cost: 0
+  pickaxePrefab: {fileID: 5717450644949688769, guid: e41a8f6f9c942aa4ea6027c45f814eb2, type: 3}

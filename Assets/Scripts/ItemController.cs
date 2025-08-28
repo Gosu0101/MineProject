@@ -4,7 +4,7 @@ public class ItemController : MonoBehaviour
 {
     // [추가된 코드] 이 아이템이 어떤 블록의 정보를 담고 있는지 저장할 변수
     public BlockData blockData;
-    //TODO: 아이템 획득, 생성될때 옆으로 살짝 튕기기
+    
 
     Rigidbody rb;
     [SerializeField] private LayerMask blockLayer;
@@ -29,8 +29,8 @@ public class ItemController : MonoBehaviour
         onGround = Physics.Raycast(transform.position, Vector3.down, 0.25f, groundLayer);
         if (onBlock || onGround)
         {
-            // [수정된 코드] 기존 코드는 계속 위로 올라가려는 문제가 있어 주석 처리
-            // rb.linearVelocity = new Vector3(0, 1f, 0);
+            
+            rb.linearVelocity = new Vector3(0, 24f*Time.deltaTime, 0);//[수정]0.2로 하면 튀어오르지도 않고 제자리에 잘 있음
         }
 
         transform.Rotate(new Vector3(0, 30, 0) * Time.deltaTime);

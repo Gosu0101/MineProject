@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickaxeID: 103
   pickaxeName: Iron Pickaxe
-  power: 30
+  power: 31
   cost: 1000
+  pickaxePrefab: {fileID: 1777867334306675843, guid: 54ac208c86ab74c47bf8a6ba3a2d9d53, type: 3}

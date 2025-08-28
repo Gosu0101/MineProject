@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Item
   - CinemachineTarget
+  - GameClearObject
   layers:
   - Default
   - TransparentFX
