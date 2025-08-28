@@ -49,8 +49,8 @@ public class BlockController : MonoBehaviour
         //Debug.Log("takeDamageStart");
         if (damage >= hardness)//데미지가 경도보다 클 경우
         {
-            hp -= damage - hardness; //곡갱이 효율관련 코드(추후 수정가능)
-            //Debug.Log("takeDamage :" + hp);
+            hp -= (damage - hardness); //곡갱이 효율관련 코드(추후 수정가능)
+            Debug.Log("takeDamage :" + hp);
         }
         else
         {
@@ -73,7 +73,8 @@ public class BlockController : MonoBehaviour
     private void DestroyBlock()
     {
         isDestroyed = true; // 파괴 상태로 변경하여 중복 호출 방지
-
+        // [추가] 블록 파괴 효과음 재생
+        AudioManager.Instance.PlayBlockBreakSound();
         resourceDrop();//자원 드랍
 
         // SpawnerScript 인스턴스가 존재하는지 확인하여 오류를 방지
