@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6682093991841443741}
   - component: {fileID: 7644973815544313424}
+  - component: {fileID: 5694061623810585214}
   m_Layer: 0
   m_Name: testbomb
   m_TagString: Untagged
@@ -51,3 +52,26 @@ MonoBehaviour:
   defaultPower: 3
   timer: 3
   effect: {fileID: 100016, guid: e8e8f2248eb63924395a2c5cd8929063, type: 3}
+--- !u!136 &5694061623810585214
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620987176714934477}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
