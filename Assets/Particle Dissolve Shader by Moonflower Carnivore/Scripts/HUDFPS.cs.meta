@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 61cd87431bad06e468cddff68c34eda6
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 33631
+  packageName: Particle Dissolve Shader Package
+  packageVersion: 1.2
+  assetPath: Assets/Particle Dissolve Shader by Moonflower Carnivore/Scripts/HUDFPS.cs
+  uploadId: 184138
