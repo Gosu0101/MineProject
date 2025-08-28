@@ -5,6 +5,8 @@ public class UpgradeStationController : MonoBehaviour
     [Header("UI 오브젝트 연결")]
     [SerializeField] private GameObject interactionPromptUI; // "((우클릭) 강화)" UI
     [SerializeField] private UpgradeUI upgradeUI; // Upgrade_Panel에 있는 UpgradeUI 스크립트
+    [SerializeField] private GameObject MainUI;
+    [SerializeField] private GameObject interactionCancel;
 
     private bool isPlayerInRange = false;
 
@@ -40,6 +42,9 @@ public class UpgradeStationController : MonoBehaviour
         Time.timeScale = isPanelActive ? 0f : 1f;
         Cursor.lockState = isPanelActive ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isPanelActive;
+
+        MainUI.SetActive(!isPanelActive);
+        interactionCancel.SetActive(isPanelActive);
     }
 
     private void OnTriggerEnter(Collider other)

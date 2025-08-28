@@ -75,7 +75,7 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        currentGold = 30000;
+        currentGold = 999999999;
 
         // [추가] 게임 시작 시 항상 첫 번째 등급의 곡괭이로 시작하도록 설정합니다.
         if (pickaxeTiers != null && pickaxeTiers.tiers.Count > 0)
