@@ -17,4 +17,4 @@ MonoBehaviour:
     can work faster.
   baseCost: 100
   costIncreaseRate: 2.5
-  valueIncrease: 0.2
+  valueIncrease: 0.4
