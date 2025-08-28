@@ -35,6 +35,8 @@ public class SpawnerScript : MonoBehaviour
 
     private void Start()
     {
+
+
         // --- 스포너 영역의 기존 땅을 제거하는 로직 ---
         ClearGroundInArea();
         // -------------------------------------------
