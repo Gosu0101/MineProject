@@ -30,7 +30,7 @@ public class ItemController : MonoBehaviour
         if (onBlock || onGround)
         {
             
-            rb.linearVelocity = new Vector3(0, 0.2f, 0);//[수정]0.2로 하면 튀어오르지도 않고 제자리에 잘 있음
+            rb.linearVelocity = new Vector3(0, 24f*Time.deltaTime, 0);//[수정]0.2로 하면 튀어오르지도 않고 제자리에 잘 있음
         }
 
         transform.Rotate(new Vector3(0, 30, 0) * Time.deltaTime);

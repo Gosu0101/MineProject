@@ -100,6 +100,7 @@ public class PlayerManager : MonoBehaviour
         CheckGrounded();
         HandleJump();
         HandleMining();
+        teleportToGround();
     }
 
     private void FixedUpdate()
@@ -315,4 +316,13 @@ public class PlayerManager : MonoBehaviour
     }
     */
     // ... (기존 코드 하단은 동일) ...
+
+    private void teleportToGround()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            transform.position = new Vector3(0, 3, 0);
+        }
+        
+    }
 }

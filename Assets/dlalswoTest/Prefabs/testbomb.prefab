@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d62490078abc14545a78ea458302f045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
+  radius: 3
   blockLayer:
     serializedVersion: 2
     m_Bits: 8
-  defaultPower: 1
-  timer: 1
-  effect: {fileID: 100016, guid: 39051c4c6f9bd604382d68b7a910a9e0, type: 3}
+  defaultPower: 3
+  timer: 3
+  effect: {fileID: 100016, guid: e8e8f2248eb63924395a2c5cd8929063, type: 3}
