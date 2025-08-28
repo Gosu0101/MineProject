@@ -9870,12 +9870,14 @@ MonoBehaviour:
   bagUpgradeButton: {fileID: 288359149}
   currentBagImage: {fileID: 0}
   upgradeBag: []
+  bagColorChange: {fileID: 0}
   currentSpeedText: {fileID: 0}
   nextSpeedText: {fileID: 0}
   speedCostText: {fileID: 0}
   speedUpgradeButton: {fileID: 84974931}
   currentSpeedImage: {fileID: 0}
   upgradeSpeed: []
+  speedColorChange: {fileID: 0}
   bagUpgradeData: {fileID: 11400000, guid: dd6e83379800a7149b399e0c968af8d5, type: 2}
   speedUpgradeData: {fileID: 11400000, guid: 57ab7b8688335724cbc96521d6deaffe, type: 2}
 --- !u!114 &288859243
@@ -52597,6 +52599,7 @@ MonoBehaviour:
   - {fileID: 1218247336}
   - {fileID: 1153551235}
   - {fileID: 836219099}
+  bagColorChange: {fileID: 1011328312}
   currentSpeedText: {fileID: 1455670125}
   nextSpeedText: {fileID: 293408220}
   speedCostText: {fileID: 1868598785}
@@ -52606,6 +52609,7 @@ MonoBehaviour:
   - {fileID: 1140982081}
   - {fileID: 1919768285}
   - {fileID: 1780193345}
+  speedColorChange: {fileID: 1061916630}
   bagUpgradeData: {fileID: 11400000, guid: dd6e83379800a7149b399e0c968af8d5, type: 2}
   speedUpgradeData: {fileID: 11400000, guid: 57ab7b8688335724cbc96521d6deaffe, type: 2}
 --- !u!1 &2109072336

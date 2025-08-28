@@ -31,6 +31,7 @@ public class UpgradeUI : MonoBehaviour
     public Button bagUpgradeButton;
     public Image currentBagImage;
     public List<GameObject> upgradeBag;
+    public Image bagColorChange;
 
     [Header("속도 UI 요소")]
     public Text currentSpeedText;
@@ -39,6 +40,7 @@ public class UpgradeUI : MonoBehaviour
     public Button speedUpgradeButton;
     public Image currentSpeedImage;
     public List<GameObject> upgradeSpeed;
+    public Image speedColorChange;
 
     [Header("강화 데이터")]
     public UpgradeData bagUpgradeData; // 에디터에서 BagUpgradeData 에셋 연결
@@ -115,17 +117,29 @@ public class UpgradeUI : MonoBehaviour
         if (bagIndex == 4 || bagIndex == 5)
         {
             if (bagIndex == 4) nextBagText.GetComponent<Outline>().effectColor = Color.forestGreen;
-            else currentBagText.GetComponent<Outline>().effectColor = Color.forestGreen;
+            else
+            {
+                currentBagText.GetComponent<Outline>().effectColor = Color.forestGreen;
+                bagColorChange.color = Color.greenYellow;
+            }
         }
         else if (bagIndex == 8 || bagIndex == 9)
         {
             if (bagIndex == 8) nextBagText.GetComponent<Outline>().effectColor = Color.blue;
-            else currentBagText.GetComponent<Outline>().effectColor = Color.blue;
+            else
+            {
+                currentBagText.GetComponent<Outline>().effectColor = Color.blue;
+                bagColorChange.color = Color.aquamarine;
+            }
         }
         else if (bagIndex == 12 || bagIndex == 13)
         {
             if (bagIndex == 12) nextBagText.GetComponent<Outline>().effectColor = Color.red;
-            else currentBagText.GetComponent<Outline>().effectColor = Color.red;
+            else
+            {
+                currentBagText.GetComponent<Outline>().effectColor = Color.red;
+                bagColorChange.color = Color.softRed;
+            }
         }
     }
 
@@ -139,26 +153,32 @@ public class UpgradeUI : MonoBehaviour
         speedCostText.text = "Cost: " + cost;
         speedUpgradeButton.interactable = (player.currentGold >= cost);
 
-        /*
-        if (bagIndex == 3) currentBagText.GetComponent<Outline>().effectColor = Color.forestGreen;
-        else if (bagIndex == 8) currentBagText.GetComponent<Outline>().effectColor = Color.blue;
-        else if (bagIndex == 14) currentBagText.GetComponent<Outline>().effectColor = Color.red;
-        */
-
         if (speedIndex == 2 || speedIndex == 3)
         {
             if (speedIndex == 2) nextSpeedText.GetComponent<Outline>().effectColor = Color.forestGreen;
-            else currentSpeedText.GetComponent<Outline>().effectColor = Color.forestGreen;
+            else
+            {
+                currentSpeedText.GetComponent<Outline>().effectColor = Color.forestGreen;
+                speedColorChange.color = Color.greenYellow;
+            }
         }
         else if (speedIndex == 7 || speedIndex == 8)
         {
             if (speedIndex == 7) nextSpeedText.GetComponent<Outline>().effectColor = Color.blue;
-            else currentSpeedText.GetComponent<Outline>().effectColor = Color.blue;
+            else
+            {
+                currentSpeedText.GetComponent<Outline>().effectColor = Color.blue;
+                speedColorChange.color = Color.aquamarine;
+            }
         }
         else if (speedIndex == 13 || speedIndex == 14)
         {
             if (speedIndex == 13) nextSpeedText.GetComponent<Outline>().effectColor = Color.red;
-            else currentSpeedText.GetComponent<Outline>().effectColor = Color.red;
+            else
+            {
+                currentSpeedText.GetComponent<Outline>().effectColor = Color.red;
+                speedColorChange.color = Color.softRed;
+            }
         }
     }
 
