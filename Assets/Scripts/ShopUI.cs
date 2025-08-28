@@ -34,19 +34,6 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    /*
-    public void UpgradeChangeButtonClick(int mode)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            upgradeUI[i].SetActive(false);
-            //upgradeUI[i + 3].GetComponent<Outline>();
-        }
-
-        upgradeUI[mode].SetActive(true);
-    }
-    */
-
     // 판매 결과를 잠시 보여주고 사라지게 하는 코루틴
     private IEnumerator ShowSaleFeedback(int gold)
     {
