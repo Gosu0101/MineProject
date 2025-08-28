@@ -100,6 +100,7 @@ public class PlayerManager : MonoBehaviour
         CheckGrounded();
         HandleJump();
         HandleMining();
+        HandleInteraction();
         teleportToGround();
     }
 
@@ -122,6 +123,27 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    // [추가] 우클릭 상호작용을 처리하는 새로운 함수
+    private void HandleInteraction()
+    {
+        // 마우스 오른쪽 버튼을 클릭했을 때
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            RaycastHit hit;
+
+            // miningDistance를 상호작용 가능 거리로 함께 사용
+            if (Physics.Raycast(ray, out hit, miningDistance))
+            {
+                // 레이캐스트에 맞은 오브젝트의 태그가 "GameClearObject"라면
+                if (hit.collider.CompareTag("GameClearObject"))
+                {
+                    // GameManager의 GameClear 함수를 호출
+                    GameManager.Instance.GameClear();
+                }
+            }
+        }
+    }
     public void ApplyMiningDamage()
     {
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
