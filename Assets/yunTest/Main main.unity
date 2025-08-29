@@ -33661,7 +33661,7 @@ MonoBehaviour:
   pickaxeVisualController: {fileID: 1827409799}
   speed: 6
   jumpForce: 6
-  mouseSensitivity: 110
+  mouseSensitivity: 300
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
