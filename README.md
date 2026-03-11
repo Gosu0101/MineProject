@@ -153,7 +153,7 @@
   - H : 플레이어 위치 초기화
 
   ## Project Structure
-
+```
   Assets
   ├─ Scenes
   │  └─ MainLjw.unity
@@ -176,7 +176,7 @@
   ├─ region
   Packages
   ProjectSettings
-
+```
   ## What I Focused On
 
   - 반복 플레이가 자연스럽게 이어지는 게임 루프 설계
